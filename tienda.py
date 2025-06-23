@@ -39,10 +39,12 @@ class Tienda(ABC):
 class Restaurante(Tienda):
     def __init__(self, nombre, costo_delivery):
         super().__init__(nombre, costo_delivery)
-    
+     
     def ingresar_producto(self, nombre, precio, stock=0):
         for p in self._productos:
-            if p.nombre ==
+            if p.nombre == nombre:
+                print(f" El producto {nombre} ya existe en el restaurante")
+                return
         nuevo_producto = Producto(nombre, precio, 0) ## restorante siempre con stock cero
         self._productos.append(nuevo_producto)
 
@@ -64,7 +66,7 @@ class Supermercado(Tienda):
         nuevo_producto = Producto(nombre, precio, stock)
         for i,producto in enumerate(self._productos):
             if producto == nuevo_producto:
-                self._productos[i] += nuevo_producto
+                self._productos[i].stock += nuevo_producto.stock
                 print(f"Stock de {nombre} actualizado en el supermercado a {self._productos[i].stock}.")
                 return
         self._productos.append(nuevo_producto)
@@ -109,7 +111,7 @@ class Farmacia(Tienda):
         nuevo_producto = Producto(nombre, precio, stock)
         for i,producto in enumerate(self._productos):
             if producto == nuevo_producto:
-                self._productos[i] += nuevo_producto
+                self._productos[i].stock += nuevo_producto.stock
                 print(f"Stock de {nombre} actualizado en la farmacia a {self._productos[i].stock}.")
                 return
         self._productos.append(nuevo_producto)
