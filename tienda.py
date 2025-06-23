@@ -7,7 +7,7 @@ class Tienda(ABC):
     def __init__(self, nombre , costo_delivery):
         self.__nombre = nombre
         self.__costo_delivery = costo_delivery
-        self.__productos = []
+        self._productos = []
     @property
     def nombre(self):
         return self.__nombre
@@ -42,12 +42,13 @@ class Restaurante(Tienda):
     
     def ingresar_producto(self, nombre, precio, stock=0):
         nuevo_producto = Producto(nombre, precio, 0) ## restorante siempre con stock cero
-    
+        self._productos.append(nuevo_producto)
+
     def listar_producto(self):
         listado = " Productos en el restaurante:\n"
-        for producto in self.__productos:
+        for producto in self._productos:
             listado += f"Nombre: {producto.nombre}, Precio: {producto.precio}\n"
-    
+        return listado
     def realizar_venta(self, nombre_producto, cantidad):
         print(f"Venta de {nombre_producto} por {cantidad} unidades en el restaurante {self.nombre}.")
 
@@ -59,31 +60,33 @@ class Supermercado(Tienda):
     
     def ingresar_producto(self, nombre, precio, stock=0):
         nuevo_producto = Producto(nombre, precio, stock)
-        for i,producto in enumerate(self.__productos):
+        for i,producto in enumerate(self._productos):
             if producto == nuevo_producto:
-                self.__productos[i] += nuevo_producto
-                print(f"Stock de {nombre} actualizado en el supermercado a {self.productos[i].stock}.")
+                self._productos[i] += nuevo_producto
+                print(f"Stock de {nombre} actualizado en el supermercado a {self._productos[i].stock}.")
                 return
-        self.__productos.append(nuevo_producto)
+        self._productos.append(nuevo_producto)
         print(f"Producto {nombre} agregado al supermercado con un stock de {stock} unidades.")
         
     def listar_producto(self):
         listado = "Productos en el supermercado:\n"
-        if not self.productos:
+        if not self._productos:
             listado += "No hay productos disponibles.\n"
         else:
-            for producto in self.__productos:
+            for producto in self._productos:
                 stock_info = f" Stock: {producto.stock}"
                 if producto.stock <10:
                     stock_info += " quedan menos de 10 productos"
-                    listado += f"Nombre: {producto.nombre}, Precio: {producto.precio}{stock_info}\n"
+                listado += f"Nombre: {producto.nombre}, Precio: {producto.precio}{stock_info}\n"
+                
+
         return listado
           
 
         
     def realizar_venta(self, nombre_producto, cantidad):
         producto_encontrado = None  ## para definir esta variable, como nada o no encontrado  
-        for producto in self.__productos:
+        for producto in self._productos:
             if producto.nombre == nombre_producto:
                 producto_encontrado = producto
                 break
@@ -102,20 +105,20 @@ class Farmacia(Tienda):
         super().__init__(nombre, costo_delivery)
     def ingresar_producto(self, nombre, precio, stock=0):
         nuevo_producto = Producto(nombre, precio, stock)
-        for i,producto in enumerate(self.__productos):
+        for i,producto in enumerate(self._productos):
             if producto == nuevo_producto:
-                self.__productos[i] += nuevo_producto
+                self._productos[i] += nuevo_producto
                 print(f"Stock de {nombre} actualizado en la farmacia a {self.productos[i].stock}.")
                 return
-        self.__productos.append(nuevo_producto)
+        self._productos.append(nuevo_producto)
         print(f"Producto {nombre} agregado a la farmacia con un stock de {stock} unidades.")
 
     def listar_producto(self):
         listado = "Productos en la farmacia:\n"
-        if not self.productos:
+        if not self._productos:
             listado += "No hay productos disponibles.\n"
         else:
-            for producto in self.__productos:
+            for producto in self._productos:
                 precio_info = f" Precio: {producto.precio}"
                 if producto.precio > 15000:
                     precio_info += " Envío gratis al solicitar este producto"
@@ -128,7 +131,7 @@ class Farmacia(Tienda):
             return 
 
         producto_encontrado = None
-        for p in self.producots:
+        for p in self._productos:
             if p.nombre == nombre_producto:
                 producto_encontrado = p
                 break
@@ -140,4 +143,4 @@ class Farmacia(Tienda):
             return
         cantidad_vender = min(cantidad, producto_encontrado.stock)
         producto_encontrado.stock -= cantidad_vender
-        print(f"Venta de {cantidad_vender} unidades de {nombre_producto} realizada en la farmacia {self.nombre}.stock restante : {producto_encontrado}") 
+        print(f"Venta de {cantidad_vender} unidades de {nombre_producto} realizada en la farmacia {self.nombre}.stock restante : {producto_encontrado.stock}") 
