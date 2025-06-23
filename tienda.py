@@ -53,7 +53,17 @@ class Restaurante(Tienda):
         for producto in self._productos:
             listado += f"Nombre: {producto.nombre}, Precio: {producto.precio}\n"
         return listado
+    
     def realizar_venta(self, nombre_producto, cantidad):
+        producto_encontrado = None
+        for producto in self._productos:
+            if producto.nombre == nombre_producto:
+                producto_encontrado = producto
+                break
+        if not producto_encontrado:
+            print(f"El producto {nombre_producto} no existe en el restaurante {self.nombre}.")
+            return
+
         print(f"Venta de {nombre_producto} por {cantidad} unidades en el restaurante {self.nombre}.")
 
 

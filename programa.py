@@ -37,7 +37,7 @@ def main():
                 else:
                      break
             while True:
-                stock_producto = input("Ingrese el stock del producto (deje en blanco si no aplica): ")
+                stock_producto = input("Ingrese el stock del producto (deje en blanco si es un restaurante): ")
                 if stock_producto == "":
                     stock_producto = 0
                     break
