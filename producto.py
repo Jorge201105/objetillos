@@ -28,6 +28,9 @@ class Producto:
         else:
             self.__stock = nuevo_stock
 
+    def __eq__(self, other):
+        return isinstance(other, Producto) and self.nombre == other.nombre
+
 """
 p1=Producto("lapiz",20,-20)        
 print(p1.nombre)
